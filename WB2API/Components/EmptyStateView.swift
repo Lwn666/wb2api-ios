@@ -7,25 +7,26 @@ import SwiftUI
 ///  2. EmptyStateView("标题", systemImage: "...", description: Text("..."))
 ///  3. EmptyStateView.search / EmptyStateView.search(text:)
 /// 外观为居中图标 + 标题 + 说明 + 可选按钮，功能与原空态一致，只是没有系统空态的精确排版。
-struct EmptyStateView<Label: View, Description: View, Actions: View>: View {
-    private let label: Label
+/// 注意：泛型参数不能叫 `Label`，否则会遮蔽 `SwiftUI.Label`，`Label<Text, Image>` 将无法解析。
+struct EmptyStateView<LabelContent: View, Description: View, Actions: View>: View {
+    private let label: LabelContent
     private let description: Description
     private let actions: Actions
 
-    init(@ViewBuilder label: () -> Label, @ViewBuilder description: () -> Description, @ViewBuilder actions: () -> Actions) {
+    init(@ViewBuilder label: () -> LabelContent, @ViewBuilder description: () -> Description, @ViewBuilder actions: () -> Actions) {
         self.label = label()
         self.description = description()
         self.actions = actions()
     }
 
-    init(@ViewBuilder label: () -> Label, @ViewBuilder description: () -> Description) where Actions == EmptyView {
+    init(@ViewBuilder label: () -> LabelContent, @ViewBuilder description: () -> Description) where Actions == EmptyView {
         self.label = label()
         self.description = description()
         self.actions = EmptyView()
     }
 
-    init(_ title: String, systemImage: String, description: Text) where Label == Label<Text, Image>, Description == Text, Actions == EmptyView {
-        self.label = Label(title, systemImage: systemImage)
+    init(_ title: String, systemImage: String, description: Text) where LabelContent == SwiftUI.Label<Text, Image>, Description == Text, Actions == EmptyView {
+        self.label = SwiftUI.Label(title, systemImage: systemImage)
         self.description = description
         self.actions = EmptyView()
     }
@@ -46,12 +47,12 @@ struct EmptyStateView<Label: View, Description: View, Actions: View>: View {
     }
 }
 
-extension EmptyStateView where Label == Label<Text, Image>, Description == Text, Actions == EmptyView {
-    static func search(text: String) -> EmptyStateView<Label<Text, Image>, Text, EmptyView> {
+extension EmptyStateView where LabelContent == SwiftUI.Label<Text, Image>, Description == Text, Actions == EmptyView {
+    static func search(text: String) -> EmptyStateView<SwiftUI.Label<Text, Image>, Text, EmptyView> {
         EmptyStateView("没有搜索结果", systemImage: "magnifyingglass", description: Text("没有找到 “\(text)” 的结果"))
     }
 
-    static var search: EmptyStateView<Label<Text, Image>, Text, EmptyView> {
+    static var search: EmptyStateView<SwiftUI.Label<Text, Image>, Text, EmptyView> {
         EmptyStateView("没有搜索结果", systemImage: "magnifyingglass", description: Text("换个关键词试试"))
     }
 }
