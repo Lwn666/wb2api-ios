@@ -112,7 +112,7 @@ struct ConfigFieldRow: View {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .multilineTextAlignment(.trailing)
-                    .fontDesign(.monospaced)
+                    .font(.system(.body, design: .monospaced))  // iOS 16.0 无 fontDesign（16.1+ 才有）
                     .focused($focused)
                     .onChange(of: text) { newValue in
                         commitText(newValue)

@@ -185,7 +185,9 @@ struct AccountDetailView: View {
             guard removed else { return }
             withAnimation(Motion.emphasized) {
                 isLeaving = true
-            } completion: {
+            }
+            // iOS 16 不支持 withAnimation(_:completion:)，用与 spring response 等长的延时近似动画结束
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) {
                 dismiss()
             }
         }
