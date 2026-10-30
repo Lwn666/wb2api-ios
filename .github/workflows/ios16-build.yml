@@ -1,6 +1,8 @@
 name: iOS16 Build
 
 on:
+  push:
+    branches: [ios16]
   workflow_dispatch:
 
 jobs:
