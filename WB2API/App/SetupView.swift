@@ -2,7 +2,7 @@ import SwiftUI
 
 /// 首启配置：服务器地址 + 密钥，玻璃卡片式表单。
 struct SetupView: View {
-    @Environment(SessionStore.self) private var session
+    @EnvironmentObject private var session: SessionStore
     @State private var address = SessionStore.defaultBaseURL
     @State private var key = ""
     @State private var isChecking = false
@@ -24,7 +24,7 @@ struct SetupView: View {
                 }
                 .padding(Metrics.m)
             }
-            .background(.background)
+            .background(Color(.systemBackground))
             .navigationTitle("连接面板")
             .navigationBarTitleDisplayMode(.inline)
         }
@@ -50,14 +50,14 @@ struct SetupView: View {
                 .autocorrectionDisabled()
                 .focused($focused, equals: .address)
                 .padding(Metrics.m)
-                .glassEffect(.regular, in: .rect(cornerRadius: Metrics.radiusM))
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: Metrics.radiusM))
 
             SecureField("api_key", text: $key)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
                 .focused($focused, equals: .key)
                 .padding(Metrics.m)
-                .glassEffect(.regular, in: .rect(cornerRadius: Metrics.radiusM))
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: Metrics.radiusM))
         }
     }
 
@@ -72,7 +72,7 @@ struct SetupView: View {
                     .frame(maxWidth: .infinity)
             }
         }
-        .buttonStyle(.glassProminent)
+        .buttonStyle(.borderedProminent)
         .controlSize(.large)
         .disabled(address.isEmpty || key.isEmpty || isChecking)
     }

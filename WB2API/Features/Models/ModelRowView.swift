@@ -19,7 +19,6 @@ struct ModelRowView: View {
                 }
                 if model.isBusy {
                     StatusTag(text: "繁忙", systemImage: "hourglass", tint: .orange)
-                        .symbolEffect(.pulse, options: .repeating, isActive: model.isBusy)
                 }
             }
 

@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// 账号列表的一行：和概览「账号池」完全同款——
-/// NavigationLink + 12pt 内边距 + `glassInteractive`，点按走 zoom 转场。
+/// NavigationLink + 12pt 内边距 + `glassInteractive`（iOS 16 下为 Material 卡片）。
 /// 行操作放在长按菜单里（ScrollView 没有 swipeActions）。
 struct AccountListRow: View {
     let account: Account
@@ -18,11 +18,6 @@ struct AccountListRow: View {
                 .glassInteractive(cornerRadius: Metrics.radiusM)
         }
         .buttonStyle(.plain)
-        .scrollTransition(.interactive, axis: .vertical) { content, phase in
-            content
-                .opacity(phase.isIdentity ? 1 : 0.6)
-                .scaleEffect(phase.isIdentity ? 1 : 0.97)
-        }
         .contextMenu {
             Button {
                 onAction(.checkin)

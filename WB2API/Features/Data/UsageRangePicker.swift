@@ -37,6 +37,6 @@ struct UsageRangePicker: View {
             .padding(.vertical, Metrics.xs)
         }
         .scrollIndicators(.hidden)
-        .motion(Motion.snappy, value: selection)
+        .motion(Motion.spring, value: selection)
     }
 }

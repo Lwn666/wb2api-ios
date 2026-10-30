@@ -6,10 +6,10 @@ import SwiftUI
 struct AccountDetailView: View {
     @Environment(\.appTheme) private var theme
 
-    @Environment(SessionStore.self) private var session
+    @EnvironmentObject private var session: SessionStore
     @Environment(\.dismiss) private var dismiss
 
-    @State private var model = AccountDetailModel()
+    @StateObject private var model = AccountDetailModel()
     @State private var isLeaving = false
     @State private var isShowingRelogin = false
 
@@ -20,7 +20,6 @@ struct AccountDetailView: View {
     }
 
     var body: some View {
-        @Bindable var model = model
         let current = model.current(account)
 
         ScrollView {
@@ -96,7 +95,7 @@ struct AccountDetailView: View {
             )
             .ignoresSafeArea()
         }
-        .background(.background)
+        .background(Color(.systemBackground))
         .opacity(isLeaving ? 0 : 1)
         .scaleEffect(isLeaving ? 0.96 : 1)
         .allowsHitTesting(!isLeaving)
@@ -121,7 +120,7 @@ struct AccountDetailView: View {
         }
         .sheet(isPresented: $isShowingRelogin) {
             ReloginView(account: current)
-                .environment(session)
+                .environmentObject(session)
         }
         .toast($model.toast)
         .task {
@@ -153,7 +152,7 @@ struct AccountDetailView: View {
                     Label("重新登录", systemImage: "person.badge.key.fill")
                         .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(.glassProminent)
+                .buttonStyle(.borderedProminent)
                 .controlSize(.large)
 
                 NavigationLink {
@@ -162,12 +161,12 @@ struct AccountDetailView: View {
                     Label("查看日志", systemImage: "text.alignleft")
                         .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(.glass)
+                .buttonStyle(.bordered)
                 .controlSize(.large)
             }
         }
         .padding(Metrics.m)
-        .glassEffect(.regular.tint(.orange.opacity(0.12)), in: .rect(cornerRadius: Metrics.radiusM))
+        .background(Color.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: Metrics.radiusM))
     }
 
     private func reload() {

@@ -9,8 +9,8 @@ import UIKit
 struct VouchersView: View {
     @Environment(\.appTheme) private var theme
 
-    @Environment(SessionStore.self) private var session
-    @State private var loader = Loader<VoucherResponse>()
+    @EnvironmentObject private var session: SessionStore
+    @StateObject private var loader = Loader<VoucherResponse>()
     @State private var toast: Toast?
 
     private var accounts: [VoucherAccount] {
@@ -42,7 +42,7 @@ struct VouchersView: View {
                         .listRowBackground(Color.clear)
                 }
             } else if nonEmpty.isEmpty {
-                ContentUnavailableView {
+                EmptyStateView {
                     Label("没有可用券码", systemImage: "ticket")
                 } description: {
                     Text("开学季抽到实物券后会显示在这里；抽到的是积分，不在此列表。")
@@ -180,7 +180,7 @@ private struct VoucherRow: View {
                 }
                 .foregroundStyle(theme.primary)
                 .padding(Metrics.s)
-                .background(.quaternary.opacity(0.4), in: .rect(cornerRadius: Metrics.radiusS))
+                .background(.quaternary.opacity(0.4), in: RoundedRectangle(cornerRadius: Metrics.radiusS))
             }
             .buttonStyle(.plain)
             .accessibilityLabel("复制券码 \(voucher.code)")

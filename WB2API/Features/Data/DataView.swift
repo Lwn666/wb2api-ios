@@ -4,8 +4,8 @@ import SwiftUI
 struct DataView: View {
     @Environment(\.appTheme) private var theme
 
-    @Environment(SessionStore.self) private var session
-    @State private var loader = Loader<UsageSnapshot>()
+    @EnvironmentObject private var session: SessionStore
+    @StateObject private var loader = Loader<UsageSnapshot>()
     @State private var dimension: UsageDimension = .account
     @State private var range: UsageRange = .days7
 
@@ -31,7 +31,7 @@ struct DataView: View {
                         DataBreakdownSection(dimension: $dimension, snapshot: snapshot)
                         DataHistoryLinks()
                     } else if loader.error == nil {
-                        ContentUnavailableView {
+                        EmptyStateView {
                             Label("暂无用量数据", systemImage: "chart.bar.xaxis")
                         } description: {
                             Text("先在面板产生一次请求，或下拉刷新。")
@@ -52,7 +52,7 @@ struct DataView: View {
                 )
                 .ignoresSafeArea()
             }
-            .background(.background)
+            .background(Color(.systemBackground))
             .navigationTitle("数据")
             .refreshable { await load() }
             .task(id: range) { await load() }
@@ -104,5 +104,5 @@ struct DataView: View {
 
 #Preview {
     DataView()
-        .environment(SessionStore())
+        .environmentObject(SessionStore())
 }

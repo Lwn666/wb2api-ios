@@ -24,7 +24,7 @@ struct AboutView: View {
                 VStack(alignment: .leading, spacing: Metrics.xs) {
                     Text("Work")
                         .font(.title3.bold())
-                    Text("WorkBuddy2API 面板的 iOS 原生客户端。SwiftUI 零第三方依赖，iOS 26 Liquid Glass。")
+                    Text("WorkBuddy2API 面板的 iOS 原生客户端。SwiftUI 零第三方依赖，iOS 16+。")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
@@ -65,7 +65,7 @@ struct AboutView: View {
                         .textSelection(.enabled)
                         .padding(Metrics.s)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(.quaternary.opacity(0.5), in: .rect(cornerRadius: Metrics.radiusS))
+                        .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: Metrics.radiusS))
                     Text("需要 Xcode 26+；`xcodebuild test` 可直接跑 40+ 单元测试。")
                         .font(.footnote)
                         .foregroundStyle(.secondary)

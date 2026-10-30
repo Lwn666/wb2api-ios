@@ -61,7 +61,6 @@ struct QueueStatusCard: View {
                     .font(.headline)
                 Spacer(minLength: Metrics.xs)
                 StatusTag(text: stateText, systemImage: stateIcon, tint: stateTint)
-                    .symbolEffect(.pulse, options: .repeating, isActive: running)
             }
 
             VStack(alignment: .leading, spacing: 2) {
@@ -69,7 +68,6 @@ struct QueueStatusCard: View {
                     Text(primaryCount, format: .number)
                         .font(.metric())
                         .foregroundStyle(finished ? stateTint : (running ? theme.primary : .primary))
-                        .contentTransition(.numericText())
                     Text(primaryLabel)
                         .font(.callout)
                         .foregroundStyle(.secondary)

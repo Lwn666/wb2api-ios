@@ -67,9 +67,9 @@ WB2API/
 
 ## 环境要求
 
-- macOS + Xcode 26 或以上（部署目标 iOS 26.0，使用 iOS 26 SDK 的 API）
+- macOS + Xcode 16 或以上（部署目标 iOS 16.0；Xcode 26 也可构建，SDK 不要求 iOS 26 API）
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen)
-- 可访问面板的 iPhone（iOS 26+）
+- 可访问面板的 iPhone（iOS 16+）
 
 ## 构建
 

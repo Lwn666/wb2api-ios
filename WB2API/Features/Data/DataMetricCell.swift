@@ -17,7 +17,6 @@ struct DataMetricCell: View {
                 .foregroundStyle(tint)
                 .lineLimit(1)
                 .minimumScaleFactor(0.65)
-                .contentTransition(.numericText())
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)

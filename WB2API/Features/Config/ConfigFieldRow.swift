@@ -62,7 +62,7 @@ struct ConfigFieldRow: View {
             }
         }
         .task { syncFromValue() }
-        .onChange(of: value) { _, _ in
+        .onChange(of: value) { _ in
             guard !focused else { return }
             syncFromValue()
         }
@@ -75,7 +75,7 @@ struct ConfigFieldRow: View {
         switch spec.kind {
         case .toggle:
             Toggle(spec.label, isOn: $flag)
-                .onChange(of: flag) { _, newValue in
+                .onChange(of: flag) { newValue in
                     guard value.boolValue != newValue else { return }
                     onChange(.bool(newValue))
                 }
@@ -87,7 +87,7 @@ struct ConfigFieldRow: View {
                     .multilineTextAlignment(.trailing)
                     .monospacedDigit()
                     .focused($focused)
-                    .onChange(of: numberText) { _, newValue in
+                    .onChange(of: numberText) { newValue in
                         commitNumber(newValue)
                     }
                     .accessibilityLabel(spec.label)
@@ -100,7 +100,7 @@ struct ConfigFieldRow: View {
                     .multilineTextAlignment(.trailing)
                     .monospacedDigit()
                     .focused($focused)
-                    .onChange(of: text) { _, newValue in
+                    .onChange(of: text) { newValue in
                         commitText(newValue)
                     }
                     .accessibilityLabel(spec.label)
@@ -114,7 +114,7 @@ struct ConfigFieldRow: View {
                     .multilineTextAlignment(.trailing)
                     .fontDesign(.monospaced)
                     .focused($focused)
-                    .onChange(of: text) { _, newValue in
+                    .onChange(of: text) { newValue in
                         commitText(newValue)
                     }
                     .accessibilityLabel(spec.label)
@@ -128,7 +128,7 @@ struct ConfigFieldRow: View {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focused)
-                    .onChange(of: text) { _, newValue in
+                    .onChange(of: text) { newValue in
                         commitText(newValue)
                     }
                     .accessibilityLabel(spec.label)
@@ -143,7 +143,7 @@ struct ConfigFieldRow: View {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focused)
-                    .onChange(of: text) { _, newValue in
+                    .onChange(of: text) { newValue in
                         commitText(newValue)
                     }
                     .accessibilityLabel(spec.label)

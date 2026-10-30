@@ -27,7 +27,6 @@ struct ModelDetailHeaderCard: View {
                     systemImage: model.isBusy ? "hourglass" : "checkmark.seal",
                     tint: model.isBusy ? .orange : .green
                 )
-                .symbolEffect(.pulse, options: .repeating, isActive: model.isBusy)
             }
             .padding(.top, Metrics.xs)
 
@@ -35,7 +34,6 @@ struct ModelDetailHeaderCard: View {
                 Text(model.creditMultiplierText)
                     .font(.metric())
                     .foregroundStyle(theme.primary)
-                    .contentTransition(.numericText())
                 Text("倍率")
                     .font(.footnote)
                     .foregroundStyle(.secondary)

@@ -4,10 +4,10 @@ import SwiftUI
 struct ModelsView: View {
     @Environment(\.appTheme) private var theme
 
-    @Environment(SessionStore.self) private var session
+    @EnvironmentObject private var session: SessionStore
 
-    @State private var models = Loader<ModelsResponse>()
-    @State private var probes = Loader<JSONValue>()
+    @StateObject private var models = Loader<ModelsResponse>()
+    @StateObject private var probes = Loader<JSONValue>()
     @State private var searchText = ""
     @State private var isShowingProbes = false
 
@@ -51,13 +51,13 @@ struct ModelsView: View {
                         .listRowSeparator(.hidden)
                 } else if visibleModels.isEmpty {
                     if searchText.isEmpty {
-                        ContentUnavailableView(
+                        EmptyStateView(
                             "暂无模型",
                             systemImage: "square.stack.3d.up.slash",
                             description: Text("面板还没有返回模型目录")
                         )
                     } else {
-                        ContentUnavailableView.search
+                        EmptyStateView.search
                     }
                 } else {
                     ForEach(visibleModels) { model in

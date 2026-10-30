@@ -6,12 +6,11 @@ import SwiftUI
 struct OverviewView: View {
     @Environment(\.appTheme) private var theme
 
-    @Environment(SessionStore.self) private var session
+    @EnvironmentObject private var session: SessionStore
     @Environment(\.scenePhase) private var scenePhase
-    @State private var model = OverviewModel()
+    @StateObject private var model = OverviewModel()
 
     var body: some View {
-        @Bindable var model = model
 
         NavigationStack {
             ScrollView {
@@ -48,7 +47,7 @@ struct OverviewView: View {
                     } else if model.isLoading {
                         LoadingSkeleton(rows: 5)
                     } else if model.overview != nil {
-                        ContentUnavailableView {
+                        EmptyStateView {
                             Label("还没有账号", systemImage: "person.crop.circle.badge.plus")
                         } description: {
                             Text("在网页端登录 WorkBuddy 账号后，下拉刷新即可出现")
@@ -69,7 +68,7 @@ struct OverviewView: View {
                 )
                 .ignoresSafeArea()
             }
-            .background(.background)
+            .background(Color(.systemBackground))
             .refreshable {
                 await model.load(using: session.client(), syncBalance: true)
             }
@@ -81,7 +80,7 @@ struct OverviewView: View {
             .onAppear {
                 Task { await model.refreshIfStale(after: 5, using: session.client()) }
             }
-            .onChange(of: scenePhase) { _, phase in
+            .onChange(of: scenePhase) { phase in
                 guard phase == .active else { return }
                 Task { await model.refreshIfStale(after: 5, using: session.client()) }
             }

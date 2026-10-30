@@ -2,13 +2,13 @@ import SwiftUI
 
 /// 账号列表主体：骨架 / 空态 / 卡片集合。
 ///
-/// 原来用 `List` —— List 会把 `glassEffect` 压平，同一张玻璃卡在概览（ScrollView）
+/// 原来用 `List` —— List 会把卡片背景压平，同一张卡在概览（ScrollView）
 /// 里是通透的，在账号页却发灰。这里改成和概览一致：ScrollView + LazyVStack。
 /// 行操作（签到/复活/暂停/禁用）保留在长按菜单里。
 struct AccountListSection: View {
     @Environment(\.appTheme) private var theme
 
-    let model: AccountsModel
+    @ObservedObject var model: AccountsModel
     let zoomNamespace: Namespace.ID
     var onReload: () -> Void
     var onOpen: (Account) -> Void
@@ -65,7 +65,7 @@ struct AccountListSection: View {
             )
             .ignoresSafeArea()
         }
-        .background(.background)
+        .background(Color(.systemBackground))
         .navigationTitle("账号")
     }
 

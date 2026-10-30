@@ -20,7 +20,7 @@ jobs:
       - name: 生成工程
         run: xcodegen generate
 
-      - name: 选择最新 Xcode（需要 iOS 26 SDK）
+      - name: 选择最新 Xcode（部署目标 iOS 16.0，不要求 iOS 26 SDK）
         run: |
           CANDIDATE=$(ls -d /Applications/Xcode*.app | sort -V | tail -1)
           echo "使用 $CANDIDATE"
@@ -68,7 +68,7 @@ jobs:
       - name: 生成工程
         run: xcodegen generate
 
-      - name: 选择最新 Xcode（需要 iOS 26 SDK）
+      - name: 选择最新 Xcode（部署目标 iOS 16.0，不要求 iOS 26 SDK）
         run: |
           CANDIDATE=$(ls -d /Applications/Xcode*.app | sort -V | tail -1)
           echo "使用 $CANDIDATE"

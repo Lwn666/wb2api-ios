@@ -2,7 +2,7 @@ import SwiftUI
 
 /// 设置：服务器地址、访问密钥、连接测试、关于与退出登录。
 struct SettingsView: View {
-    @Environment(SessionStore.self) private var session
+    @EnvironmentObject private var session: SessionStore
     @Environment(\.appTheme) private var theme
     @AppStorage(AppTheme.storageKey) private var accentName = AccentChoice.violet.rawValue
 
@@ -22,7 +22,6 @@ struct SettingsView: View {
     }
 
     var body: some View {
-        @Bindable var session = session
 
         Form {
             Section {
@@ -69,7 +68,6 @@ struct SettingsView: View {
                     Label(testMessage, systemImage: testPassed ? "checkmark.circle.fill" : "xmark.octagon.fill")
                         .font(.footnote)
                         .foregroundStyle(testPassed ? Color.green : Color.red)
-                        .symbolEffect(.bounce, value: testPassed)
                 }
             } header: {
                 Text("诊断")
@@ -88,8 +86,8 @@ struct SettingsView: View {
             Section {
                 LabeledContent("版本", value: appVersion)
                 LabeledContent("构建", value: buildNumber)
-                LabeledContent("系统要求", value: "iOS 26")
-                LabeledContent("设计", value: "Liquid Glass · \(theme.accent.title)强调")
+                LabeledContent("系统要求", value: "iOS 16")
+                LabeledContent("设计", value: "Material 卡片 · \(theme.accent.title)强调")
             } header: {
                 Text("关于")
             } footer: {
@@ -175,5 +173,5 @@ struct SettingsView: View {
     NavigationStack {
         SettingsView()
     }
-    .environment(SessionStore())
+    .environmentObject(SessionStore())
 }

@@ -2,8 +2,8 @@ import SwiftUI
 
 /// 配置：网页端同款中文分区 + 未映射键的原始表单 + 高级 JSON 编辑。
 struct ConfigView: View {
-    @Environment(SessionStore.self) private var session
-    @State private var editor = ConfigEditor()
+    @EnvironmentObject private var session: SessionStore
+    @StateObject private var editor = ConfigEditor()
     @State private var isLoading = false
     @State private var errorText: String?
     @State private var isSaving = false
@@ -23,7 +23,7 @@ struct ConfigView: View {
                     LoadingSkeleton(rows: 6)
                 }
             } else if !editor.isLoaded {
-                ContentUnavailableView {
+                EmptyStateView {
                     Label("配置未加载", systemImage: "slider.horizontal.3")
                 } description: {
                     Text("下拉刷新重新获取面板配置。")
@@ -192,5 +192,5 @@ struct ConfigView: View {
     NavigationStack {
         ConfigView()
     }
-    .environment(SessionStore())
+    .environmentObject(SessionStore())
 }

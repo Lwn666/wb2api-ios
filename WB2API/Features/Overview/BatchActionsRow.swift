@@ -23,7 +23,7 @@ struct BatchActionsRow: View {
             }
             .padding(.vertical, Metrics.m)
             .frame(maxWidth: .infinity)
-            .glassEffect(.regular.interactive(), in: .rect(cornerRadius: Metrics.radiusL))
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: Metrics.radiusL))
         }
     }
 
@@ -41,7 +41,6 @@ struct BatchActionsRow: View {
                         .font(.title3)
                         .foregroundStyle(theme.primary)
                         .frame(height: 22)
-                        .symbolEffect(.bounce, value: running)
                 }
 
                 Text(action.shortTitle)
