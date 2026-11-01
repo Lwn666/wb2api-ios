@@ -29,7 +29,7 @@ struct HealthCard: View {
             let saturated = digest.inFlightFullCount >= digest.healthy
             items.append(StatusLine(
                 id: 2,
-                icon: saturated ? "exclamationmark.triangle.fill" : "gauge.with.dots.needle.67percent",
+                icon: saturated ? "exclamationmark.triangle.fill" : "speedometer",
                 text: saturated
                     ? "并发已满 · \(digest.inFlightFullCount)/\(digest.healthy) 个账号在途占满，新请求需等待"
                     : "\(digest.inFlightFullCount)/\(digest.healthy) 个账号并发已满，其余可接新请求",

@@ -15,7 +15,7 @@ enum AppTab: Hashable {
 
     var icon: String {
         switch self {
-        case .overview: return "gauge.with.dots.needle.50percent"
+        case .overview: return "speedometer"
         case .accounts: return "person.2.fill"
         case .tasks: return "checklist"
         case .data: return "chart.bar.xaxis"
