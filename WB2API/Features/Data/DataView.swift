@@ -41,7 +41,6 @@ struct DataView: View {
                 }
                 .padding(.horizontal, Metrics.m)
                 .padding(.top, Metrics.s)
-                .padding(.bottom, Metrics.tabBarClearance)
             }
             .scrollIndicators(.hidden)
             .background {
