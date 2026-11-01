@@ -47,8 +47,11 @@ jobs:
           set -euo pipefail
           APP=$(find .build/Build/Products/Release-iphoneos -maxdepth 1 -name "*.app" | head -1)
           echo "app: $APP"
+          # INFOPLIST_KEY_ 只支持白名单键，自定义键会被静默丢弃，所以这里直接注入
+          /usr/libexec/PlistBuddy -c "Add :CADisableMinimumFrameDurationOnPhone bool true" "$APP/Info.plist" 2>/dev/null \
+            || /usr/libexec/PlistBuddy -c "Set :CADisableMinimumFrameDurationOnPhone true" "$APP/Info.plist"
           /usr/libexec/PlistBuddy -c "Print :MinimumOSVersion" "$APP/Info.plist" || true
-          echo "--- 120Hz 开关（必须是 true 或 1）---"
+          echo "--- 120Hz 开关（必须是 true）---"
           /usr/libexec/PlistBuddy -c "Print :CADisableMinimumFrameDurationOnPhone" "$APP/Info.plist" || echo "❌ 缺 CADisableMinimumFrameDurationOnPhone"
           rm -rf /tmp/ipa && mkdir -p /tmp/ipa/Payload
           cp -R "$APP" /tmp/ipa/Payload/
