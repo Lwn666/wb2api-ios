@@ -22,6 +22,8 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: org.example.wb2api
         PRODUCT_NAME: WB2API
         GENERATE_INFOPLIST_FILE: YES
+        # 解锁 ProMotion 120Hz：iOS 默认把第三方 App 的核心动画限制在 60fps
+        INFOPLIST_KEY_CADisableMinimumFrameDurationOnPhone: YES
         MARKETING_VERSION: "1.3.0"
         CURRENT_PROJECT_VERSION: "36"
         INFOPLIST_KEY_CFBundleDisplayName: Work

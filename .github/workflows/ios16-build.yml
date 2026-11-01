@@ -48,6 +48,8 @@ jobs:
           APP=$(find .build/Build/Products/Release-iphoneos -maxdepth 1 -name "*.app" | head -1)
           echo "app: $APP"
           /usr/libexec/PlistBuddy -c "Print :MinimumOSVersion" "$APP/Info.plist" || true
+          echo "--- 120Hz 开关（必须是 true 或 1）---"
+          /usr/libexec/PlistBuddy -c "Print :CADisableMinimumFrameDurationOnPhone" "$APP/Info.plist" || echo "❌ 缺 CADisableMinimumFrameDurationOnPhone"
           rm -rf /tmp/ipa && mkdir -p /tmp/ipa/Payload
           cp -R "$APP" /tmp/ipa/Payload/
           rm -rf /tmp/ipa/Payload/*.app/_CodeSignature || true

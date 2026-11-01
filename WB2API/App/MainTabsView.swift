@@ -71,14 +71,16 @@ struct MainTabsView: View {
     }
 }
 
-/// iOS 16 上的 Liquid Glass 近似：超薄材质 + 上缘高光 + 内阴影 + 柔和外阴影。
-/// 真正的折射/边缘色散由 iOS 26 的 WindowServer 合成，iOS 16 无法复现；
-/// 这里用多层叠加把「浮动胶囊玻璃」的观感做到接近。
+/// iOS 16 上的 Liquid Glass 近似：超薄材质 + 上缘高光 + 柔和外阴影。
+/// 真正的折射/边缘色散由 iOS 26 的 WindowServer 合成，iOS 16 无法复现。
+///
+/// 性能约束（实测掉帧后调整）：渲染层级从 5 层压到 3 层——
+/// 去掉了第二层模糊描边和第二层贴地阴影；选中态改为常驻视图切换 opacity，
+/// 不再用 matchedGeometryEffect（它在 if 分支里每帧重建几何，切换时掉帧）。
 struct GlassTabBar: View {
     @Environment(\.appTheme) private var theme
 
     @Binding var selection: AppTab
-    @Namespace private var indicator
 
     var body: some View {
         HStack(spacing: 0) {
@@ -89,7 +91,6 @@ struct GlassTabBar: View {
         .padding(.horizontal, 5)
         .padding(.vertical, 4)
         .background(glassBackground)
-        .animation(.spring(response: 0.34, dampingFraction: 0.82), value: selection)
     }
 
     // MARK: - 单个标签
@@ -98,7 +99,9 @@ struct GlassTabBar: View {
         let isSelected = selection == tab
 
         return Button {
-            withAnimation(.spring(response: 0.34, dampingFraction: 0.82)) {
+            // 只在这里做一次动画；外层不再加 .animation(value:)，
+            // 否则同一属性被两个动画驱动，事务叠加会让弹簧看起来"拖"。
+            withAnimation(.easeOut(duration: 0.16)) {
                 selection = tab
             }
         } label: {
@@ -114,17 +117,15 @@ struct GlassTabBar: View {
             .foregroundStyle(isSelected ? AnyShapeStyle(theme.primary) : AnyShapeStyle(Color.primary.opacity(0.72)))
             .frame(maxWidth: .infinity)
             .padding(.vertical, 6)
-            .background {
-                if isSelected {
-                    RoundedRectangle(cornerRadius: 17, style: .continuous)
-                        .fill(Color.primary.opacity(0.075))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 17, style: .continuous)
-                                .strokeBorder(Color.white.opacity(0.35), lineWidth: 0.6)
-                        )
-                        .matchedGeometryEffect(id: "selection", in: indicator)
-                }
-            }
+            // 常驻背景 + 切换透明度：动画期间只做颜色合成，不触发几何重算
+            .background(
+                RoundedRectangle(cornerRadius: 17, style: .continuous)
+                    .fill(Color.primary.opacity(isSelected ? 0.075 : 0))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 17, style: .continuous)
+                            .strokeBorder(Color.white.opacity(isSelected ? 0.35 : 0), lineWidth: 0.6)
+                    )
+            )
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -137,7 +138,7 @@ struct GlassTabBar: View {
     private var glassBackground: some View {
         Capsule(style: .continuous)
             .fill(.ultraThinMaterial)
-            // 上缘高光 + 下缘暗边：模拟玻璃的边缘折射
+            // 上缘高光 + 下缘暗边：模拟玻璃的边缘折射（单层描边）
             .overlay(
                 Capsule(style: .continuous)
                     .strokeBorder(
@@ -154,13 +155,6 @@ struct GlassTabBar: View {
                         lineWidth: 0.9
                     )
             )
-            // 内侧一圈极淡的阴影，让玻璃看起来有厚度
-            .overlay(
-                Capsule(style: .continuous)
-                    .strokeBorder(Color.black.opacity(0.06), lineWidth: 2.5)
-                    .blur(radius: 2)
-            )
-            .shadow(color: Color.black.opacity(0.18), radius: 14, x: 0, y: 6)
-            .shadow(color: Color.black.opacity(0.06), radius: 2, x: 0, y: 1)
+            .shadow(color: Color.black.opacity(0.18), radius: 12, x: 0, y: 5)
     }
 }
