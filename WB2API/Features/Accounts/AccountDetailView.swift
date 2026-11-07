@@ -24,7 +24,7 @@ struct AccountDetailView: View {
 
         ScrollView {
             LazyVStack(alignment: .leading, spacing: Metrics.m) {
-                if current.needsLogin {
+                if current.needsLogin && !IgnoredWarnings.isIgnored(current.uid) {
                     actionBanner(current)
                         .staggeredAppear(index: 0)
                 }
@@ -76,6 +76,7 @@ struct AccountDetailView: View {
                 .staggeredAppear(index: 4)
 
                 ActionsCard(
+                    account: current,
                     busy: model.busy,
                     onAction: perform,
                     onRemove: requestRemove
